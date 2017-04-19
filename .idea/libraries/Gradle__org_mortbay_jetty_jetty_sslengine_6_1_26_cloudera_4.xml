@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.mortbay.jetty:jetty-sslengine:6.1.26.cloudera.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-sslengine/6.1.26.cloudera.4/51567b04e2e70da4c412bd9653d004c2ca232070/jetty-sslengine-6.1.26.cloudera.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-sslengine/6.1.26.cloudera.4/fe88d7a624311487b91b0142f1afd5d42f95fc4b/jetty-sslengine-6.1.26.cloudera.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

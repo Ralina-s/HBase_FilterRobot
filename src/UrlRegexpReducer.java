@@ -18,6 +18,7 @@ public class UrlRegexpReducer extends TableReducer<ImmutableBytesWritable, Text,
         Integer len_url_pref = "url#".length();
         Integer len_rule_pref = "rules#".length();
 
+
         for (Text value: values) {
             if (value.toString().startsWith("url#")) {
                 urls.add(value.toString().substring(len_url_pref));
@@ -29,16 +30,21 @@ public class UrlRegexpReducer extends TableReducer<ImmutableBytesWritable, Text,
         try {
             RobotsFilter robot = new RobotsFilter(rules);
             for (String url: urls) {
-                if (robot.IsAllowed(url)) {
+                if (robot.IsAllowed(url.substring(1))) {
 
-//                    checkAndDelete(Bytes.toBytes("docs"), Bytes.toBytes("disallow"), );
-                    Delete delete = new Delete(key.copyBytes());
-                    delete.addColumn(Bytes.toBytes("docs"), Bytes.toBytes("disallow"));
-                    context.write(null, delete);
+                    if (url.charAt(0) == 'Y') {
+                        Delete delete = new Delete(key.copyBytes());
+                        delete.addColumn(Bytes.toBytes("docs"), Bytes.toBytes("disallow"));
+                        context.write(null, delete);
+                    }
+
                 } else {
-                    Put put = new Put(key.copyBytes());
-                    put.add(Bytes.toBytes("docs"), Bytes.toBytes("disallow"), Bytes.toBytes("Y"));
-                    context.write(null, put);
+
+                    if (url.charAt(0) == 'N') {
+                        Put put = new Put(key.copyBytes());
+                        put.add(Bytes.toBytes("docs"), Bytes.toBytes("disallow"), Bytes.toBytes("Y"));
+                        context.write(null, put);
+                    }
                 }
             }
 

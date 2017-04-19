@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.hadoop:hadoop-auth:2.6.0-cdh5.10.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-auth/2.6.0-cdh5.10.1/466ef7652f0da5c9ea3d4e50dfe77c09eaea3383/hadoop-auth-2.6.0-cdh5.10.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-auth/2.6.0-cdh5.10.1/fad90774602526cf12cd7f17e1312b1021c91e1e/hadoop-auth-2.6.0-cdh5.10.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.hbase:hbase-procedure:1.2.0-cdh5.10.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hbase/hbase-procedure/1.2.0-cdh5.10.1/a1009e30fa24603dfbbedb95f12d8d0739b05bb7/hbase-procedure-1.2.0-cdh5.10.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hbase/hbase-procedure/1.2.0-cdh5.10.1/d718aac4281c956f6d555afbaae5c917a5ea7f68/hbase-procedure-1.2.0-cdh5.10.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

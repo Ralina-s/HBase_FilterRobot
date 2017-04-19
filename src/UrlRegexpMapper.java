@@ -29,10 +29,19 @@ public class UrlRegexpMapper extends TableMapper<ImmutableBytesWritable, Text>{
             // -- table is "webpages"
             if (webpeges_pattern.matcher(table_name).find()) {
                 String url = columns.getValue(cf_pages, column_url).toString();
+                byte [] mark_byte = columns.getValue(cf_pages, Bytes.toBytes("disabled"));
+                String mark;
+
+                if (mark_byte == Bytes.toBytes("Y")) {
+                    mark = "Y";
+                } else {
+                    mark = "N";
+                }
+
                 String site = (new URL(url)).getHost();
 
                 String key_new = MD5Hash.getMD5AsHex(Bytes.toBytes(site));
-                context.write(new ImmutableBytesWritable(Bytes.toBytes(key_new)), new Text("url#" + url));
+                context.write(new ImmutableBytesWritable(Bytes.toBytes(key_new)), new Text("url#" + mark + url));
             }
             // -- table is "webdites"
             else {
@@ -40,7 +49,7 @@ public class UrlRegexpMapper extends TableMapper<ImmutableBytesWritable, Text>{
                 String rules = columns.getValue(cf_pages, column_robots).toString();
 
                 String key_new = MD5Hash.getMD5AsHex(Bytes.toBytes(site));
-                context.write(new ImmutableBytesWritable(Bytes.toBytes(key_new)), new Text("rules" + rules));
+                context.write(new ImmutableBytesWritable(Bytes.toBytes(key_new)), new Text("rules#" + rules));
             }
         } catch (Exception e) {
             e.printStackTrace();

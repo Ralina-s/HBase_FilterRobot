@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.hadoop:hadoop-hdfs:2.6.0-cdh5.10.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-hdfs/2.6.0-cdh5.10.1/2927c38555c365f8f0fabd218f208d694830bc62/hadoop-hdfs-2.6.0-cdh5.10.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-hdfs/2.6.0-cdh5.10.1/e0a3641e5f3b606be522c8abcdcd8affaebf5590/hadoop-hdfs-2.6.0-cdh5.10.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
