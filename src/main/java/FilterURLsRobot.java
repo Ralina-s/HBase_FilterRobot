@@ -22,7 +22,7 @@ public class FilterURLsRobot extends Configured implements Tool {
         return job.waitForCompletion(true) ? 0 : 1;
     }
 
-    Job GetJobConf(String[] args) throws IOException {
+    public Job GetJobConf(String[] args) throws IOException {
         String webpages = args[0];
         String websites = args[1];
 
@@ -31,8 +31,13 @@ public class FilterURLsRobot extends Configured implements Tool {
 
         List<Scan> scans = new ArrayList<Scan>();
 
-        scans.add(new Scan().setAttribute("scan.attributes.table.name", Bytes.toBytes(webpages)));
-        scans.add(new Scan().setAttribute("scan.attributes.table.name", Bytes.toBytes(websites)));
+        Scan scan_pages = new Scan();
+        scan_pages.setAttribute("scan.attributes.table.name", Bytes.toBytes(webpages));
+        scans.add(scan_pages);
+
+        Scan scan_sites = new Scan();
+        scan_sites.setAttribute("scan.attributes.table.name", Bytes.toBytes(websites));
+        scans.add(scan_sites);
 
         TableMapReduceUtil.initTableMapperJob(
                 scans,
