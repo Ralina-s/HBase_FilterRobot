@@ -41,7 +41,7 @@ public class UrlRegexpMapper extends TableMapper<ImmutableBytesWritable, Text>{
                 String site = (new URL(url)).getHost();
 
                 String key_new = MD5Hash.getMD5AsHex(Bytes.toBytes(site));
-                context.write(new ImmutableBytesWritable(Bytes.toBytes(key_new)), new Text("url#" + mark + url));
+                context.write(new ImmutableBytesWritable(Bytes.toBytes(key_new)), new Text("url#" + mark + url.split(site)[1]));
             }
             // -- table is "webdites"
             else {
