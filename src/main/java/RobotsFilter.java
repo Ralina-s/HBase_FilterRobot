@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class RobotsFilter {
-    static final Pattern rule_major = Pattern.compile("Disallow:");
 
     List<Pattern> patterns = new ArrayList<Pattern>();
 
@@ -24,7 +23,7 @@ public class RobotsFilter {
                 } else {
                     patterns.add(Pattern.compile(rule_subst.replaceAll("\\.", "\\\\.")));
                 }
-            } else  if (rule != ""){
+            } else  if (rule.length() != 0){
                 throw new BadFormatException();
             }
         }

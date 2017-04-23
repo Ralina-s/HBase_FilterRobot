@@ -16,6 +16,8 @@ import java.util.List;
 
 public class FilterURLsRobot extends Configured implements Tool {
 
+    static enum CountersEnum { COUNT_URLS,  COUNT_ROBOTS, COUNT_REDUCE_VALUES, COUNT_TOTAL_MAPPERS, COUNT_TOTAL_REDUCERS, COUNT_ERROR}
+
     @Override
     public int run(String[] args) throws Exception {
         Job job = GetJobConf(args);
@@ -28,6 +30,7 @@ public class FilterURLsRobot extends Configured implements Tool {
 
         Job job = Job.getInstance(getConf(), FilterURLsRobot.class.getCanonicalName());
         job.setJarByClass(FilterURLsRobot.class);
+
 
         List<Scan> scans = new ArrayList<Scan>();
 
@@ -42,7 +45,7 @@ public class FilterURLsRobot extends Configured implements Tool {
         TableMapReduceUtil.initTableMapperJob(
                 scans,
                 UrlRegexpMapper.class,
-                ImmutableBytesWritable.class, Text.class,
+                Text.class, Text.class,
                 job
         );
 
@@ -51,6 +54,12 @@ public class FilterURLsRobot extends Configured implements Tool {
                 UrlRegexpReducer.class,
                 job
         );
+
+        job.setPartitionerClass(PartitionerRobot.class);
+        job.setSortComparatorClass(SortRobotFirst.class);
+        job.setGroupingComparatorClass(GroupSite.class);
+
+        job.setNumReduceTasks(2);
 
         return job;
     }
