@@ -9,8 +9,15 @@ public class SortRobotFirst extends WritableComparator {
 
     @Override
     public int compare(WritableComparable a, WritableComparable b) {
-        String a_mark = ((Text)a).toString();
-        String b_mark = ((Text)b).toString();
-        return a_mark.compareTo(b_mark);
+//        String a_mark = ((Text)a).toString();
+//        String b_mark = ((Text)b).toString();
+//        return a_mark.compareTo(b_mark);
+
+        int cmp = a.toString().substring(1).compareTo(b.toString().substring(1));
+        if (cmp != 0) {
+            return cmp;
+        } else {
+            return a.toString().substring(0, 1).compareTo(b.toString().substring(0, 1));
+        }
     }
 }

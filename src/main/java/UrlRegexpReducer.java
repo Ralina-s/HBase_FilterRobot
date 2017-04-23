@@ -7,6 +7,7 @@ import org.apache.hadoop.io.MD5Hash;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 
+import java.net.URL;
 import java.util.Iterator;
 
 
@@ -32,65 +33,85 @@ public class UrlRegexpReducer extends TableReducer<Text, Text, ImmutableBytesWri
         Counter counter_values = context.getCounter(FilterURLsRobot.CountersEnum.class.getName(),
                 FilterURLsRobot.CountersEnum.COUNT_REDUCE_VALUES.toString());
 
-//        for (Text vall: values) {
-//            counter_values.increment(1);
-//        }
 
         counter_reducer.increment(1);
 
-        Iterator<Text> val = values.iterator();
-        String rules = new String(val.next().toString());
+//        Iterator<Text> val = values.iterator();
+//        String rules = new String(val.next().toString());
+        String rules = "";
         String url;
         char mark;
 
-        if (rules.compareTo("Disallow: /medicine/urolog") == 0) {
-            System.out.println("___________ My debug ___________");
-            System.out.print("rules:  ");
-            System.out.println(rules);
-            System.out.println("________________________________");
-        }
+        RobotsFilter robot = new RobotsFilter();
 
         try {
-            counter_values.increment(1);
-            RobotsFilter robot = new RobotsFilter(rules);
-            counter_mapper.increment(1);
+//            counter_values.increment(1);
+//            RobotsFilter robot = new RobotsFilter(rules);
+//            counter_mapper.increment(1);
+//
+//            while (val.hasNext()) {
+            for (Text val: values) {
 
-            while (val.hasNext()) {
-                url = new String(val.next().toString());
+                if (key.toString().charAt(0) == '0') {
+                    counter_values.increment(1);
+                    rules = val.toString();
+                    robot = new RobotsFilter(rules);
+
+//                    if (rules.length() != 0) {
+//                        counter_mapper.increment(1);
+//
+//                        if (counter_mapper.getValue() < 20) {
+//                            System.out.println("_________Robot__________");
+//                            System.out.println(rules);
+//                        }
+//
+//                        if (rules.compareTo("Disallow: */4.html$") == 0) {
+//                            System.out.println("___________ My debug ___________");
+//                            System.out.print("rules:  ");
+//                            System.out.println(rules);
+//                            System.out.println("________________________________");
+//                        }
+//                    }
+
+                    continue;
+                }
+
+                url = val.toString();
                 mark = url.charAt(0);
                 url = url.substring(1);
+                URL url_url = (new URL(url));
+                String host = url_url.getProtocol() + "://" + url_url.getHost();
+                String path = url.substring(host.length());
 
 //                counter_urls.increment(1);
 
 //                counter.increment(1);
-                if (url.compareTo("http://56nv.ru/obyavleniya/obyavleniya-chastnyh-lic-ot-10082016") == 0) {
+                if (url.compareTo("http://ahatan.uol.ua/active/?filter=videosaction") == 0) {
                     System.out.println("___________ My debug ___________");
                     System.out.print("url: ");
                     System.out.println(url);
                     System.out.print("rules:  ");
                     System.out.println(rules);
                     System.out.println("IsAllowed:  ");
-                    System.out.println(robot.IsAllowed(url));
+                    System.out.println(robot.IsAllowed(path));
                     System.out.println("docs:disable:  ");
                     System.out.println(mark);
                     System.out.println("________________________________");
                 }
 
-                if (robot.IsAllowed(url)) {
+                if (robot.IsAllowed(path)) {
 
                     if (mark == 'Y') {
-                        MD5Hash hash_url = (new MD5Hash()).digest(url);
-                        Delete delete = new Delete(hash_url.getDigest());
-                        delete.addColumn(Bytes.toBytes("docs"), Bytes.toBytes("disallow"));
+                        Delete delete = new Delete(Bytes.toBytes(MD5Hash.digest(url).toString()));
+                        delete.addColumn(Bytes.toBytes("docs"), Bytes.toBytes("disabled"));
                         context.write(null, delete);
                     }
 
                 } else {
 
                     if (mark == 'N') {
-                        MD5Hash hash_url = (new MD5Hash()).digest(url);
-                        Put put = new Put(hash_url.getDigest());
-                        put.add(Bytes.toBytes("docs"), Bytes.toBytes("disallow"), Bytes.toBytes("Y"));
+                        Put put = new Put(Bytes.toBytes(MD5Hash.digest(url).toString()));
+                        put.addColumn(Bytes.toBytes("docs"), Bytes.toBytes("disabled"), Bytes.toBytes("Y"));
                         context.write(null, put);
                     }
                 }

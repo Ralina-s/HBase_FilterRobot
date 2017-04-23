@@ -8,6 +8,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class UrlRegexpMapper extends TableMapper<Text, Text>{
@@ -44,14 +45,13 @@ public class UrlRegexpMapper extends TableMapper<Text, Text>{
 
         try {
             // -- table is "webpages"
-//            if (webpeges_pattern.matcher(table_name).find()) {
-            if (table_name.compareTo("webpages_ralina") == 0) {
+            if (webpeges_pattern.matcher(table_name).find()) {
 
                 String url = new String(columns.getValue(cf_pages, column_url));
                 byte [] mark_byte = columns.getValue(cf_pages, Bytes.toBytes("disabled"));
                 String mark;
 
-                if (mark_byte == Bytes.toBytes("Y")) {
+                if (Arrays.equals(mark_byte, Bytes.toBytes("Y"))) {
                     mark = "Y";
                 } else {
                     mark = "N";
@@ -59,39 +59,42 @@ public class UrlRegexpMapper extends TableMapper<Text, Text>{
 
                 String site = (new URL(url)).getHost();
 
-                if (counter_urls.getValue() < 5) {
-                    System.out.println("_________Url__________");
-                    System.out.println(site);
-                }
+//                if (counter_urls.getValue() < 5) {
+//                    System.out.println("_________Url__________");
+//                    System.out.println(site);
+//                }
 
                 context.write(new Text("1" + site), new Text(mark + url));
 
                 counter_urls.increment(1);
             }
             // -- table is "webdites"
-            else if (table_name.compareTo("websites_ralina") == 0) {
+            else {
 
                 String site = new String(columns.getValue(cf_sites, column_site));
                 String rules;
 
-                if (counter_robots.getValue() < 5) {
-                    System.out.println("_________Robot__________");
-                    System.out.println(site);
-                }
+//                if (counter_robots.getValue() < 5) {
+//                    System.out.println("_________Robot__________");
+//                    System.out.println(site);
+//                }
 
                 byte[] rules_byte = columns.getValue(cf_sites, column_robots);
                 if (rules_byte != null) {
                     rules = new String(rules_byte);
+
+//                    if (counter_robots.getValue() < 15) {
+//                        System.out.println("_________Robot__________");
+//                        System.out.println(rules);
+//                    }
+
+                    counter_robots.increment(1);
                 } else {
-                    rules = new String("");
+                    rules = "";
                 }
 
                 context.write(new Text("0" + site), new Text(rules));
 
-                counter_robots.increment(1);
-
-            } else {
-                counter_error.increment(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
